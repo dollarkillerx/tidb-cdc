@@ -1,0 +1,44 @@
+# 指定配置文件中涉及的库名、表名是否为大小写敏感
+# 该配置会同时影响 filter 和 sink 相关配置，默认为 true
+case-sensitive = true
+
+# 是否输出 old value，从 v4.0.5 开始支持，从 v5.0 开始默认为 true
+enable-old-value = true
+
+[filter]
+# 忽略指定 start_ts 的事务
+#ignore-txn-start-ts = [1, 2]
+
+# 过滤器规则
+# 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
+rules = ['deal_test.deals']
+
+[mounter]
+# mounter 线程数，用于解码 TiKV 输出的数据
+worker-num = 16
+
+[sink]
+# 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
+# 支持 default、ts、rowid、table 四种分发器，分发规则如下：
+# - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
+# - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
+# - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发
+# - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
+# matcher 的匹配语法和过滤器规则语法相同
+dispatchers = [
+    #    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
+    {matcher = ['deal_test.deals'], dispatcher = "dealsid"},
+]
+# 对于 MQ 类的 Sink，可以指定消息的协议格式
+# 目前支持 default、canal、avro 和 maxwell 四种协议。default 为 TiCDC Open Protocol
+protocol = "maxwell"
+
+[cyclic-replication]
+# 是否开启环形同步
+enable = false
+# 当前 TiCDC 的复制 ID
+replica-id = 1
+# 需要过滤掉的同步 ID
+#filter-replica-ids = [2,3]
+# 是否同步 DDL
+sync-ddl = true

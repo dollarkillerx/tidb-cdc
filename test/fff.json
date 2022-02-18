@@ -1,0 +1,24 @@
+{
+  "database": "deal_test",
+  "table": "deals",
+  "type": "insert",
+  "ts": 1645154405,
+  "data": {
+    "created_at": "2022-02-14 15:03:37.423",
+    "deal_type": "A",
+    "deleted_at": null,
+    "entity_id": "030610000000000299",
+    "entity_name": "大元金库 A1111",
+    "entity_type": 0,
+    "financiers_entity_id": null,
+    "financiers_name": "大元金库1111",
+    "financiers_type": 1,
+    "financing_company_data_module_id": null,
+    "financing_company_entity_id": null,
+    "financing_company_entity_type": null,
+    "financing_company_name": null,
+    "status": 1,
+    "type": null,
+    "updated_at": "2022-02-14 15:03:37.423"
+  }
+}
